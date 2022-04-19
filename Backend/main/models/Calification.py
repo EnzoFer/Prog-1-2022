@@ -4,8 +4,8 @@ class Calification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     puntaje = db.Column(db.String(100), nullable=False)
     comentario = db.Column(db.String(100), nullable=False)
-    userID = db.Column(db.String(100), nullable=False)
-    poemaID = db.Column(db.String(100), nullable=False)
+    userID = db.Column(db.String(100), db.ForeignKey('user.id'), nullable=False)
+    poemaID = db.Column(db.String(100), db.ForeignKey('poem.id'), nullable=False)
 
     def __repr__(self):
         return '<User: %r %r >' % (self.id, self.puntaje, self.comentario, self.userID, self.poemaID)

@@ -7,8 +7,8 @@ class Users(db.Model):
     rol = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     def __repr__(self):
-        return '<Usuario: %r %r >' % (self.firstname, self.password, self.rol, self.email)
-    #Convertir objeto en JSON
+        return '<Usuario: %r %r >' % (self.id, self.firstname, self.password, self.rol, self.email)
+   
     def to_json(self):
         usuario_json = {
             'id': self.id,
@@ -20,6 +20,7 @@ class Users(db.Model):
         }
         return usuario_json
 
+
     def to_json_short(self):
         usuario_json = {
             'id': self.id,
@@ -30,8 +31,8 @@ class Users(db.Model):
 
         }
         return usuario_json
-    @staticmethod
-    #Convertir JSON a objeto
+    
+    @staticmethod    
     def from_json(usuario_json):
         id = usuario_json.get('id')
         firstname = usuario_json.get('firstname')

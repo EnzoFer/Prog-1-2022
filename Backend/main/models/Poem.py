@@ -3,7 +3,7 @@ from .. import db
 class Poem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     cuerpo = db.Column(db.String(100), nullable=False)
     fecha = db.Column(db.String(100), nullable=False)
 

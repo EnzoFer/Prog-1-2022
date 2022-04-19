@@ -2,9 +2,12 @@ from flask import request
 from flask_restful import Resource
 
 CALIFICACIONES = {
-    1 : {'calification' : 5},
-    2 : {'calification' : 4},
-    3 : {'calification' : 2}
+    1 : {'calification' : 1},
+    2 : {'calification' : 2},
+    3 : {'calification' : 3},
+    4 : {'calification' : 4},
+    5 : {'calification' : 5},
+    
 }
 
 class Calification(Resource):

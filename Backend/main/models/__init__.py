@@ -1,3 +1,3 @@
 from .Poem import Poem as PoemModel
-from .User import User as UserModel
-from .Califi import Mark as MarkModel
+from .User import Users as UserModel
+from .Calification import Calification as CalificationModel

@@ -1,48 +1,48 @@
 from .. import db
 
-class Mark(db.Model):
+class Calification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.String(100), nullable=False)
-    comment = db.Column(db.String(100), nullable=False)
+    puntaje = db.Column(db.String(100), nullable=False)
+    comentario = db.Column(db.String(100), nullable=False)
     userID = db.Column(db.String(100), nullable=False)
     poemaID = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return '<User: %r %r >' % (self.id, self.score, self.comment, self.userID, self.poemaID)
+        return '<User: %r %r >' % (self.id, self.puntaje, self.comentario, self.userID, self.poemaID)
 
     def to_json(self):
-        mark_json = {
+        calificacion_json = {
             'id': self.id,
-            'score': str(self.score),
-            'comment': str(self.comment),
+            'puntaje': str(self.puntaje),
+            'comentario': str(self.comentario),
             'userID': str(self.userID),
             'poemaID': str(self.poemaID),
 
         }
-        return mark_json
+        return calificacion_json
 
     def to_json_short(self):
-        mark_json = {
+        calificacion_json = {
             'id': self.id,
-            'score': str(self.score),
-            'comment': str(self.comment),
+            'puntaje': str(self.puntaje),
+            'comentario': str(self.comentario),
             'userID': str(self.userID),
             'poemaID': str(self.poemaID),
         }
-        return mark_json
+        return calificacion_json
     
     @staticmethod
 
     def from_json(user_json):
         id = user_json.get('id')
-        score = user_json.get('score')
-        comment = user_json.get('comment')
+        puntaje = user_json.get('puntaje')
+        comentario = user_json.get('comentario')
         userID = user_json.get('userID')
         poemaID = user_json.get('poemaID')
 
-        return Mark(id=id,
-                    score=score,
-                    comment=comment,
+        return Calification(id=id,
+                    puntaje=puntaje,
+                    comentario=comentario,
                     userID=userID,
                     poemaID=poemaID
                     )

@@ -14,9 +14,17 @@ class Calification(db.Model):
 
     def __repr__(self):
         return f'<Puntaje: {self.puntaje}, Comentario: {self.comentario}, User: {self.userID}, Poema: {self.poemID}>'
-
-
     def to_json(self):
+            calification_json = {
+            'id': self.id,
+            'puntaje': str(self.puntaje),
+            'comentario': str(self.comentario),
+            'userID': str(self.userID),
+            'poemID': str(self.poemID),                
+            }
+            return calification_json
+
+    def to_json_complete(self):
         user = [users.to_json() for users in self.user]
         poem = poem.to_json()
         calification_json = {
@@ -24,21 +32,14 @@ class Calification(db.Model):
             'puntaje': str(self.puntaje),
             'comentario': str(self.comentario),
             'userID': str(self.userID),
-            'poemaID': str(self.poemID),
+            'poemID': str(self.poemID),
             'poem' : poem,
             'user': user
 
         }
         return calification_json
 
-    def to_json_short(self):
-        calification_json = {
-            'id': self.id,
-            'puntaje': str(self.puntaje),
-            'comentario': str(self.comentario),
-            
-        }
-        return calification_json
+    
     
     @staticmethod
     def from_json(calification_json):
@@ -46,11 +47,11 @@ class Calification(db.Model):
         puntaje = calification_json.get('puntaje')
         comentario = calification_json.get('comentario')
         userID = calification_json.get('userID')
-        poemaID = calification_json.get('poemaID')
+        poemID = calification_json.get('poemID')
 
         return Calification(id=id,
                     puntaje=puntaje,
                     comentario=comentario,
                     userID=userID,
-                    poemaID=poemaID
+                    poemID=poemID
                     )

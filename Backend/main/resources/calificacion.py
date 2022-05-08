@@ -60,7 +60,7 @@ class Califications(Resource):
                     if value == "userID":
                         userID = userID.order_by(CalificationModel.userID)
                     
-                    if value == "userId[des]":
+                    if value == "userID[des]":
                         userID = userID.order_by(CalificationModel.userID.desc())
                     
                     if value == "poemID":
@@ -71,6 +71,16 @@ class Califications(Resource):
                         
                 
         califications = califications.paginate(pag, p_pag, False, 30)
+        
+                   
+        return jsonify({
+            'calification' : [calification.to_json() for calification in califications.items],
+            'total' : califications.total,
+            'pages' : califications.pages,
+            'page' : pag
+             })
+
+
 
 
         

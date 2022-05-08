@@ -3,6 +3,8 @@ from flask import request, jsonify
 from .. import db
 from main.models import PoemModel
 from main.models import UserModel
+from main.models import CalificationModel
+
 import datetime
 from sqlalchemy import func
 
@@ -62,15 +64,15 @@ class Poems(Resource):
                         poems = poems.order_by(PoemModel.fecha.desc())
                 
                     if value == "calification":
-                        poems = poems.outerjoin(PoemModel.calification).group_by(PoemModel.id).order_by(func.avg(PoemModel.puntaje))
+                        poems = poems.outerjoin(PoemModel.calification).group_by(PoemModel.id).order_by(func.avg(CalificationModel.puntaje))
                 
                     if value == "calification[desc]":
-                        poems = poems.outerjoin(PoemModel.calification).group_by(PoemModel.id).order_by(func.avg(PoemModel.puntaje).desc())
+                        poems = poems.outerjoin(PoemModel.calification).group_by(PoemModel.id).order_by(func.avg(CalificationModel.puntaje).desc())
         poems = poems.paginate(pag, p_pag, False, 30)
 
                
         return jsonify({
-                "poems" : [poem.to_json_short() for poem in poems.items],
+                "poems" : [poem.to_json() for poem in poems.items],
                 "total" : poems.total,
                 "pages" : poems.pages,
                 "page" : pag

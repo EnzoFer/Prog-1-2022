@@ -21,21 +21,21 @@ class Poem(db.Model):
     def promedio_calificaciones(self):
         lista_calificaciones = []
         promedio = 0
-        if len (lista_calificaciones.self) >= 1:
-            for calification in self.califications:
+        if len (lista_calificaciones) >= 1:
+            for calification in self.calification       :
                 puntaje = calification.puntaje
                 lista_calificaciones.append(puntaje)
                 promedio = statistics.mean(lista_calificaciones)
             return promedio
 
     def to_json(self):
-        califications = [calification.to_json() for calification in self.calification]
+        calification = [calification.to_json() for calification in self.calification]
         poem_json = {
             'id': self.id,
             'titulo': self.titulo,
             'user_id': self.user_id,
             'cuerpo': self.cuerpo,
-            'fecha': str(self.fecha_hora.strftime("%d-%m-%Y")),
+            'fecha': str(self.fecha.strftime("%d-%m-%Y")),
             'calification': self.calification,
             'promedio_calificaciones': self.promedio_calificaciones()
         }

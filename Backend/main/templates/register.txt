@@ -1,0 +1,3 @@
+Bienbenido {useer.firstname}
+
+Registrado en el sistema correctamente

@@ -1,4 +1,5 @@
 from .. import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model):
@@ -8,24 +9,57 @@ class User(db.Model):
     rol = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
 
-    poem = db.relationship("Poem", back_populates= "author", cascade="all, delete-orphan")
-    calification = db.relationship("Calification", back_populates= "author", cascade="all, delete-orphan")
+    poems = db.relationship("Poem", back_populates= "user", cascade="all, delete-orphan")
+    califications = db.relationship("Calification", back_populates= "user", cascade="all, delete-orphan")
+
+
+    @property
+    def plain_password(self):
+        raise AttributeError('Error al leer la contraseña')
+
+    @plain_password.setter
+    def plain_password(self, password):
+        self.password = generate_password_hash(password)
+
+
+    def validate_pass(self,password):
+        return check_password_hash(self.password, password)
+
+
+
 
     def __repr__(self):
         return '<Usuario: %r %r >' % (self.id, self.firstname, self.password, self.rol, self.email)
    
-    def to_json(self):
-        poem = [poem.to_json() for poem in self.poem]
-        calification = [calification.to_json() for calification in self.calification]
+    def to_json_complete(self):
+        poems = [poem.to_json() for poem in self.poems]
+        califications = [calification.to_json() for calification in self.califications]
         user_json = {
             'id': self.id,
             'firstname': self.firstname,
             'password': self.password,
             'rol' : self.rol,
-            'email': self.email
+            'email': self.email,
+            'califications': califications,
+            'poems': poems,
+            'n_poems': len(self.poems),
+            'n_puntaje': len(self.puntaje)
+            
         }
         return user_json
 
+    def to_json(self):
+        user_json = {
+            'id': self.id,
+            'firstname': str(self.firstname),
+            'email': str(self.email),
+            'rol': str(self.rol),
+            'n_poems': len(self.poems),
+            'n_califications': len(self.califications),
+            'poems': [poem.to_json() for poem in self.poems]
+            
+        }
+        return user_json
 
     def to_json_short(self):
         user_json = {
@@ -47,3 +81,4 @@ class User(db.Model):
             password = password,
             rol = rol,
             email =email)
+    

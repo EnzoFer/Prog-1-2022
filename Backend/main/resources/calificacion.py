@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
 from main.models import CalificationModel
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 
 
@@ -10,82 +11,48 @@ class Calification(Resource):
         calification = db.session.query(CalificationModel).get_or_404(id)
         return calification.to_json()
 
-
+    @jwt_required()
     def delete(self, id):
+        claims = get_jwt()
+        userID = get_jwt_identity()             
         calification = db.session.query(CalificationModel).get_or_404(id)
-        db.session.delete(calification)
-        db.session.commit()
-        return '', 204
+        if "rol" in claims:
+            if claims['rol'] == "admin" or userID == calification.userID:
+                db.session.delete(calification)
+                db.session.commit()
+                return '', 204
+            else:
+                return "error"
+    
+    @jwt_required()
+    def put(self, id):
+        userID = get_jwt_identity()
+        calification = db.session.query(CalificationModel).get_or_404(id)
+        if userID == calification.userID:
+            data = request.get_json().items()
+            for key, value in data:
+                setattr(calification,key,value)
+            db.session.add(calification)
+            db.session.commit()
+            return calification.to_json(), 201
+        else:
+            return "error"
 
 
 class Califications(Resource):
     def get(self):
-        #califications = db.session.query(CalificationModel).all()
-        #return jsonify([calification.to_json_short() for calification in califications])
-        pag = 1
-        p_pag = 10
-        califications = db.session.query(CalificationModel)
-
-
-        if request.get_json():
-            filters = request.get_json().items()
-            for key, value in filters:
-
-                if key == "pag":
-                    pag = int(value)
-
-                if key == "p_pag":
-                    p_pag = int(value)
-
-                if key == "puntaje":
-                    puntaje = puntaje.filter(CalificationModel.puntaje == value)
-                
-                if key == "comentario":
-                    comentario = comentario.filter(CalificationModel.comentario.like("%" + value + "%"))
-                
-                if key == "poemID":
-                    poemID = poemID.filter(CalificationModel.poemID == value)
-                
-                if key == "poemID":
-                    poemID = poemID.filter(CalificationModel.poemID == value)
-                
-                if key == "sort_by":
-                    
-                    if value == "puntaje":
-                        puntaje = puntaje.order_by(CalificationModel.puntaje)
-                    
-                    if value == "puntaje[desc]":
-                        puntaje = puntaje.order_by(CalificationModel.puntaje.desc())
-                    
-                    if value == "userID":
-                        userID = userID.order_by(CalificationModel.userID)
-                    
-                    if value == "userID[des]":
-                        userID = userID.order_by(CalificationModel.userID.desc())
-                    
-                    if value == "poemID":
-                        poemID = poemID.order_by(CalificationModel.poemID)
-                    
-                    if value == "poemID[des]":
-                        poemID = poemID.order_by(CalificationModel.poemID.desc())
-                        
-                
-        califications = califications.paginate(pag, p_pag, False, 30)
+        califications = db.session.query(CalificationModel).all()
+        return jsonify([calification.to_json() for calification in califications])
         
-                   
-        return jsonify({
-            'calification' : [calification.to_json() for calification in califications.items],
-            'total' : califications.total,
-            'pages' : califications.pages,
-            'page' : pag
-             })
-
-
-
-
-        
+    @jwt_required()
     def post(self):
         calification = CalificationModel.from_json(request.get_json())
-        db.session.add(calification)
-        db.session.commit()
-        return calification.to_json(), 201
+        claims = get_jwt()
+        if "rol" in claims:
+            if claims ["rol"] == "poet":
+                db.session.add(calification)
+                db.session.commit()
+                return calification.to_json(), 201
+            
+            else:
+                return "xxxx"

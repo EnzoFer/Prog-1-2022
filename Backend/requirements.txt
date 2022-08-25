@@ -2,3 +2,5 @@ Flask
 python-dotenv
 Flask-restful
 flask_sqlalchemy
+flask-jwt-extended
+flask-mail

@@ -46,7 +46,7 @@ class User(Resource):
 
 
 class Users(Resource):
-    @jwt_required
+    @admin_required
     def get(self):
         user = db.session.query(UserModel)
         pag = 1
@@ -81,7 +81,7 @@ class Users(Resource):
                     if value == "n_califications":
                         users = users.outerjoin(UserModel.califications).group_by(UserModel.id).order_by(func.count(UserModel.id).desc())
         
-        users = users.paginate(pag, p_pag, False, 30)
+        users = users.paginate(pag, p_pag, True, 30)
         
         return jsonify({
             'users' : [user.to_json() for user in users.items],
@@ -89,7 +89,7 @@ class Users(Resource):
             'pages' : users.pages,
             'pag' : pag
         })
-    @jwt_required
+    @admin_required
     def post(self):
         user = UserModel.from_json(request.get_json())
         db.session.add(user)

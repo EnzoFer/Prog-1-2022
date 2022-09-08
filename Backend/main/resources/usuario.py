@@ -48,7 +48,7 @@ class User(Resource):
 class Users(Resource):
     @jwt_required
     def get(self):
-        users = db.session.query(UserModel)
+        user = db.session.query(UserModel)
         pag = 1
         p_pag = 10
         if request.get_json():

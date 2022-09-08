@@ -49,7 +49,7 @@ def create_app():
     
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = int(os.getenv('JWT_ACCESS_TOKEN_EXPIRES'))
-    
+    jwt.init_app(app)
     from main.auth import routes
 
     app.register_blueprint(auth.routes.auth)
@@ -62,7 +62,7 @@ def create_app():
     app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
     app.config['FLASK_MAIL_SENDER'] = os.getenv('FLASK_MAIL_SENDER')
 
-    mailsender.init_app    
+    mailsender.init_app(app)
     
        
     

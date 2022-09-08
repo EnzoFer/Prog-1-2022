@@ -12,18 +12,19 @@ class User(db.Model):
     poems = db.relationship("Poem", back_populates= "user", cascade="all, delete-orphan")
     califications = db.relationship("Calification", back_populates= "user", cascade="all, delete-orphan")
 
+    
 
     @property
     def plain_password(self):
         raise AttributeError('Error al leer la contraseña')
 
     @plain_password.setter
-    def plain_password(self, password):
-        self.password = generate_password_hash(password)
+    def plain_password(self, secret):
+        self.password = generate_password_hash(secret)
 
 
-    def validate_pass(self,password):
-        return check_password_hash(self.password, password)
+    def validate_pass(self,secret):
+        return check_password_hash(str(self.password) , str (secret))
 
 
 
@@ -78,7 +79,7 @@ class User(db.Model):
         email = user_json.get('email')
         return User (id = id,
             firstname = firstname,
-            password = password,
+            plain_password = password,
             rol = rol,
             email =email)
     

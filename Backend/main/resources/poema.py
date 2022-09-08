@@ -123,13 +123,13 @@ class Poems(Resource):
 
     @jwt_required()
     def post(self):
-        user_id = get_jwt_identity
+        user_id = get_jwt_identity()
         poem = PoemModel.from_json(request.get_json())
         user = db.session.query(UserModel).get_or_404(user_id)
         claims = get_jwt()
         if "rol" in claims:
             if claims ["rol"] == "poet":
-                if len(user.poems) == 0 or len (user.calications) >= 2:
+                if len(user.poems) == 0 or len (user.califications) >= 2:
                     poem.user_id = user_id
                     db.session.add(poem)
                     db.session.commit()

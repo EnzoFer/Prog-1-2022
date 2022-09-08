@@ -1,3 +1,3 @@
-Bienbenido {useer.firstname}
+Bienbenido {user.firstname}
 
 Registrado en el sistema correctamente

@@ -3,8 +3,6 @@ from flask import Falsk, Blueprint, render_template
 
 app = Blueprint('app', __name__, url_prefix="/")
 
-
-
 @app.route('/')
 def main():
     return render_template('main.html')

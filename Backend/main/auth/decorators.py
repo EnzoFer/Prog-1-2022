@@ -20,6 +20,7 @@ def admin_required(fn):
     return wrapper
 
 
+
 @jwt.user_identity_loader
 def user_identity_lookup(user):
     print("User identity lookup")

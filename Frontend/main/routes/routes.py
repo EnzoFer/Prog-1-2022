@@ -1,5 +1,5 @@
 from re import template
-from flask import Falsk, Blueprint, render_template
+from flask import Flask, Blueprint, render_template
 
 app = Blueprint('app', __name__, url_prefix="/")
 
